@@ -1,0 +1,298 @@
+### ═══════════════════════════════
+### CATEGORIAS
+### ═══════════════════════════════
+
+### Obtener todas las categorias
+GET http://127.0.0.1:8000/categorias
+
+### Obtener una categoria
+GET http://127.0.0.1:8000/categorias/1
+
+### Crear categoria
+POST http://127.0.0.1:8000/categorias
+Content-Type: application/json
+
+{
+    "nombre": "Papeleria",
+    "impuesto": 7.00
+}
+
+### Actualizar categoria
+PUT http://127.0.0.1:8000/categorias/1
+Content-Type: application/json
+
+{
+    "nombre": "Papeleria",
+    "impuesto": 7.00
+}
+
+### Eliminar categoria
+DELETE http://127.0.0.1:8000/categorias/1
+
+
+
+### ═══════════════════════════════
+### PRODUCTOS
+### ═══════════════════════════════
+
+### Obtener todos los productos
+GET http://127.0.0.1:8000/productos
+
+### Obtener un producto
+GET http://127.0.0.1:8000/productos/1
+
+### Crear producto
+POST http://127.0.0.1:8000/productos
+Content-Type: application/json
+
+{
+    "codigo": "PAP-001",
+    "nombre": "Cuaderno universitario",
+    "peso": 0.35,
+    "cantidad": 20,
+    "stock_minimo": 5,
+    "tipo_empaque": "carton",
+    "precio": 8500.00,
+    "categoria_id": 1
+}
+
+### Actualizar producto
+PUT http://127.0.0.1:8000/productos/1
+Content-Type: application/json
+
+{
+    "codigo": "PAP-001",
+    "nombre": "Cuaderno universitario",
+    "peso": 0.35,
+    "cantidad": 20,
+    "stock_minimo": 5,
+    "tipo_empaque": "carton",
+    "precio": 9000.00,
+    "categoria_id": 1
+}
+
+### Eliminar producto
+DELETE http://127.0.0.1:8000/productos/1
+
+
+
+### ═══════════════════════════════
+### CLIENTES
+### ═══════════════════════════════
+
+### Obtener todos los clientes
+GET http://127.0.0.1:8000/clientes
+
+### Obtener un cliente
+GET http://127.0.0.1:8000/clientes/1
+
+### Crear cliente
+POST http://127.0.0.1:8000/clientes
+Content-Type: application/json
+
+{
+    "cedula": "1234567890",
+    "nombre": "Juan David",
+    "apellido": "Garcia",
+    "telefono": "3101234567",
+    "correo": "juandavid@correo.com"
+}
+
+### Actualizar cliente
+PUT http://127.0.0.1:8000/clientes/1
+Content-Type: application/json
+
+{
+    "cedula": "1234567890",
+    "nombre": "Juan David",
+    "apellido": "Garcia",
+    "telefono": "3101234567",
+    "correo": "juandavid@correo.com"
+}
+
+### Eliminar cliente
+DELETE http://127.0.0.1:8000/clientes/1
+
+
+
+### ═══════════════════════════════
+### PROVEEDORES
+### ═══════════════════════════════
+
+### Obtener todos los proveedores
+GET http://127.0.0.1:8000/proveedores
+
+### Obtener un proveedor
+GET http://127.0.0.1:8000/proveedores/1
+
+### Crear proveedor
+POST http://127.0.0.1:8000/proveedores
+Content-Type: application/json
+
+{
+    "nombre": "Distribuidora El Papelero",
+    "telefono": "6012345678",
+    "ciudad": "Bogota"
+}
+
+### Actualizar proveedor
+PUT http://127.0.0.1:8000/proveedores/1
+Content-Type: application/json
+
+{
+    "nombre": "Distribuidora El Papelero",
+    "telefono": "6012345678",
+    "ciudad": "Medellin"
+}
+
+### Eliminar proveedor
+DELETE http://127.0.0.1:8000/proveedores/1
+
+
+
+### ═══════════════════════════════
+### COMPRAS
+### ═══════════════════════════════
+
+### Obtener todas las compras
+GET http://127.0.0.1:8000/compras
+
+### Obtener una compra
+GET http://127.0.0.1:8000/compras/1
+
+### Crear compra
+POST http://127.0.0.1:8000/compras
+Content-Type: application/json
+
+{
+    "proveedor_id": 1,
+    "fecha": "2026-05-26 10:00:00",
+    "detalles": [
+        {
+            "producto_id": 1,
+            "cantidad": 10,
+            "costo_unitario": 6000.00
+        },
+        {
+            "producto_id": 2,
+            "cantidad": 5,
+            "costo_unitario": 12000.00
+        }
+    ]
+}
+
+### Intentar modificar compra (debe fallar)
+PUT http://127.0.0.1:8000/compras/1
+Content-Type: application/json
+
+{
+    "proveedor_id": 1,
+    "fecha": "2026-05-26 10:00:00"
+}
+
+### Intentar eliminar compra (debe fallar)
+DELETE http://127.0.0.1:8000/compras/1
+
+
+
+### ═══════════════════════════════
+### VENTAS
+### ═══════════════════════════════
+
+### Obtener todas las ventas
+GET http://127.0.0.1:8000/ventas
+
+### Obtener una venta
+GET http://127.0.0.1:8000/ventas/1
+
+### Crear venta
+POST http://127.0.0.1:8000/ventas
+Content-Type: application/json
+
+{
+    "cliente_id": 1,
+    "fecha": "2026-05-26 11:00:00",
+    "detalles": [
+        {
+            "producto_id": 1,
+            "cantidad": 3
+        },
+        {
+            "producto_id": 2,
+            "cantidad": 1
+        }
+    ]
+}
+
+### Intentar modificar venta (debe fallar)
+PUT http://127.0.0.1:8000/ventas/1
+Content-Type: application/json
+
+{
+    "cliente_id": 1,
+    "fecha": "2026-05-26 11:00:00"
+}
+
+### Intentar eliminar venta (debe fallar)
+DELETE http://127.0.0.1:8000/ventas/1
+
+### Crear venta con stock insuficiente (debe fallar)
+POST http://127.0.0.1:8000/ventas
+Content-Type: application/json
+
+{
+    "cliente_id": 1,
+    "fecha": "2026-05-26 11:00:00",
+    "detalles": [
+        {
+            "producto_id": 1,
+            "cantidad": 9999
+        }
+    ]
+}
+
+### Crear venta con producto duplicado (debe fallar)
+POST http://127.0.0.1:8000/ventas
+Content-Type: application/json
+
+{
+    "cliente_id": 1,
+    "fecha": "2026-05-26 11:00:00",
+    "detalles": [
+        {
+            "producto_id": 1,
+            "cantidad": 1
+        },
+        {
+            "producto_id": 1,
+            "cantidad": 2
+        }
+    ]
+}
+
+
+
+### ═══════════════════════════════
+### REPORTES
+### ═══════════════════════════════
+
+### Ingresos totales
+GET http://127.0.0.1:8000/reportes/ingresos
+
+### Gastos totales
+GET http://127.0.0.1:8000/reportes/gastos
+
+### Productos con stock bajo
+GET http://127.0.0.1:8000/reportes/stock-bajo
+
+### Top compradores
+GET http://127.0.0.1:8000/reportes/top-compradores
+
+### Clientes que solo han comprado una vez
+GET http://127.0.0.1:8000/reportes/una-compra
+
+### Cliente mas frecuente
+GET http://127.0.0.1:8000/reportes/mas-frecuente
+
+### Resumen de una venta
+GET http://127.0.0.1:8000/reportes/ventas/1/resumen
