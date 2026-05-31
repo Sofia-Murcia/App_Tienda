@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda App — Gestión de Microservicios</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- ══════════════════════════════════════════
+       SIDEBAR
+  ══════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>Tienda App</h1>
+      <span>Gestión de Microservicios</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Principal</div>
+
+      <div class="nav-item active" data-page="dashboard" data-label="Dashboard">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Dashboard
+      </div>
+
+      <div class="nav-section-label">Catálogo</div>
+
+      <div class="nav-item" data-page="productos" data-label="Productos">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+        Productos
+      </div>
+
+      <div class="nav-section-label">Personas</div>
+
+      <div class="nav-item" data-page="clientes" data-label="Clientes">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Clientes
+      </div>
+
+      <div class="nav-item" data-page="proveedores" data-label="Proveedores">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="1" y="3" width="15" height="13"/>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        Proveedores
+      </div>
+
+      <div class="nav-section-label">Operaciones</div>
+
+      <div class="nav-item" data-page="ventas" data-label="Nueva Venta">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        Nueva Venta
+      </div>
+
+      <div class="nav-item" data-page="compras" data-label="Registrar Compra">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Registrar Compra
+      </div>
+
+      <div class="nav-item" data-page="historial" data-label="Historial de Ventas">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        Historial Ventas
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ══════════════════════════════════════════
+       CONTENIDO PRINCIPAL
+  ══════════════════════════════════════════ -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="flex items-center gap-3">
+        <button class="hamburger" id="btn-hamburger" aria-label="Menú">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <span class="topbar-title" id="topbar-titulo">Dashboard</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="text-sm text-muted" id="topbar-fecha"></span>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════
+         PAGE: DASHBOARD
+    ══════════════════════════════════════ -->
+    <main id="page-dashboard" class="page active">
+      <div class="page-header">
+        <h2>Dashboard</h2>
+        <p>Resumen financiero y analítica de clientes</p>
+      </div>
+
+      <!-- Banner alertas stock -->
+      <div id="stock-alerta-banner" class="stock-banner hidden"></div>
+
+      <!-- Stats cards -->
+      <div class="stats-grid">
+        <div class="stat-card verde">
+          <div class="stat-label">Ingresos Totales</div>
+          <div class="stat-value dinero" id="stat-ingresos">—</div>
+          <div class="stat-sub">Ventas a clientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Gastos Totales</div>
+          <div class="stat-value dinero" id="stat-gastos">—</div>
+          <div class="stat-sub">Compras a proveedores</div>
+        </div>
+        <div class="stat-card azul">
+          <div class="stat-label">Utilidad Neta</div>
+          <div class="stat-value dinero" id="stat-utilidad">—</div>
+          <div class="stat-sub">Ingresos − Gastos</div>
+        </div>
+        <div class="stat-card amarillo">
+          <div class="stat-label">Alertas de Stock</div>
+          <div class="stat-value" id="stat-stock-alerta">—</div>
+          <div class="stat-sub">Productos bajo mínimo</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Lado izquierdo: financiero + top compradores -->
+        <div>
+          <!-- Barras financieras -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Ingresos vs Gastos</h3>
+            </div>
+            <div class="financiero-bar">
+              <div class="bar-item">
+                <div class="bar-label">
+                  <span>Ingresos</span>
+                  <strong id="bar-label-ingr">—</strong>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill ingresos" id="bar-ingresos" style="width:0%"></div>
+                </div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-label">
+                  <span>Gastos</span>
+                  <strong id="bar-label-gast">—</strong>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill gastos" id="bar-gastos" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top compradores -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3>Top Compradores</h3>
+              <span class="badge badge-default">Por valor acumulado</span>
+            </div>
+            <div class="analytics-list" id="top-compradores-list">
+              <div class="loading-wrapper"><div class="spinner"></div></div>
+            </div>
+          </div>
+
+          <!-- Clientes una compra -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3>Compraron Solo Una Vez</h3>
+              <span class="badge badge-warning">Retención requerida</span>
+            </div>
+            <div class="analytics-list" id="una-compra-list">
+              <div class="loading-wrapper"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lado derecho: cliente más frecuente -->
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Cliente Más Frecuente</h3>
+            </div>
+            <div id="mas-frecuente">
+              <div class="loading-wrapper"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════
+         PAGE: PRODUCTOS
+    ══════════════════════════════════════ -->
+    <main id="page-productos" class="page">
+      <div class="page-header flex items-center justify-between">
+        <div>
+          <h2>Productos</h2>
+          <p>Catálogo con 4 categorías y alertas de stock automáticas</p>
+        </div>
+        <button class="btn btn-primary" onclick="abrirModalProducto()">
+          + Nuevo Producto
+        </button>
+      </div>
+
+      <!-- Filtros -->
+      <div class="card mb-5">
+        <div class="flex items-center gap-3">
+          <input type="text" id="buscador-prod" placeholder="Buscar por nombre o código…" oninput="filtrarProductos()" style="max-width:280px">
+          <select id="filtro-cat-prod" onchange="filtrarProductos()">
+            <option value="">Todas las categorías</option>
+          </select>
+        </div>
+        <div class="mt-4 flex gap-4 text-sm text-muted">
+          <span><span style="display:inline-block;width:10px;height:10px;background:var(--color-danger-bg);border-radius:2px;margin-right:4px;border:1px solid var(--color-danger)"></span>Stock agotado</span>
+          <span><span style="display:inline-block;width:10px;height:10px;background:var(--color-warning-bg);border-radius:2px;margin-right:4px;border:1px solid var(--color-warning)"></span>Stock bajo mínimo</span>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th><th>Nombre</th><th>Categoría</th>
+              <th>Peso</th><th>Empaque</th><th>Precio</th>
+              <th>IVA</th><th>Stock</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-productos">
+            <tr><td colspan="9"><div class="loading-wrapper"><div class="spinner"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════
+         PAGE: CLIENTES
+    ══════════════════════════════════════ -->
+    <main id="page-clientes" class="page">
+      <div class="page-header flex items-center justify-between">
+        <div>
+          <h2>Clientes</h2>
+          <p>Registro y gestión de clientes de la tienda</p>
+        </div>
+        <button class="btn btn-primary" onclick="abrirModalCliente()">+ Nuevo Cliente</button>
+      </div>
+
+      <div class="card mb-5">
+        <input type="text" id="buscador-cli" placeholder="Buscar por nombre, cédula o correo…" oninput="filtrarClientes()" style="max-width:320px">
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Cédula</th><th>Nombre</th><th>Teléfono</th><th>Correo</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="tabla-clientes">
+            <tr><td colspan="5"><div class="loading-wrapper"><div class="spinner"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════
+         PAGE: PROVEEDORES
+    ══════════════════════════════════════ -->
+    <main id="page-proveedores" class="page">
+      <div class="page-header flex items-center justify-between">
+        <div>
+          <h2>Proveedores</h2>
+          <p>Gestión de proveedores por ciudad</p>
+        </div>
+        <button class="btn btn-primary" onclick="abrirModalProveedor()">+ Nuevo Proveedor</button>
+      </div>
+
+      <div class="card mb-5">
+        <input type="text" id="buscador-prov" placeholder="Buscar por nombre o ciudad…" oninput="filtrarProveedores()" style="max-width:320px">
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Teléfono</th><th>Ciudad</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="tabla-proveedores">
+            <tr><td colspan="4"><div class="loading-wrapper"><div class="spinner"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════
+         PAGE: NUEVA VENTA (Wizard)
+    ══════════════════════════════════════ -->
+    <main id="page-ventas" class="page">
+      <div class="page-header">
+        <h2>Nueva Venta</h2>
+        <p>Flujo guiado de compra para el cliente</p>
+      </div>
+
+      <div class="venta-wizard">
+        <!-- Steps indicator -->
+        <div class="wizard-steps">
+          <div class="wstep active" id="step-1">
+            <div class="wstep-num">1</div>
+            <div class="wstep-label">Cliente</div>
+          </div>
+          <div class="wstep" id="step-2">
+            <div class="wstep-num">2</div>
+            <div class="wstep-label">Productos</div>
+          </div>
+          <div class="wstep" id="step-3">
+            <div class="wstep-num">3</div>
+            <div class="wstep-label">Confirmar</div>
+          </div>
+        </div>
+
+        <!-- Paso 1: Seleccionar cliente -->
+        <div class="wizard-panel active" id="venta-paso-1">
+          <div class="card">
+            <div class="card-header"><h3>¿Quién compra?</h3></div>
+            <div class="form-group">
+              <label>Cliente</label>
+              <select id="venta-cliente">
+                <option value="">Cargando clientes…</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" onclick="venta_paso1()">Continuar →</button>
+              <button class="btn btn-ghost btn-sm" onclick="navegar('clientes')" style="margin-left:auto">+ Registrar cliente nuevo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 2: Seleccionar productos -->
+        <div class="wizard-panel" id="venta-paso-2">
+          <div class="card">
+            <div class="card-header"><h3>Agregar Productos</h3></div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Categoría</label>
+                <select id="venta-categoria" onchange="venta_cargarProductos()">
+                  <option value="">— Selecciona categoría —</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Producto</label>
+                <select id="venta-producto">
+                  <option value="">Primero selecciona categoría</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Cantidad</label>
+                <input type="number" id="venta-cantidad" min="1" value="1">
+              </div>
+            </div>
+            <div class="mt-4">
+              <button class="btn btn-secondary" onclick="venta_agregarItem()">+ Agregar al carrito</button>
+            </div>
+          </div>
+
+          <div class="card mt-4">
+            <div class="card-header"><h3>Carrito</h3></div>
+            <div id="carrito-list">
+              <div class="empty-state" style="padding:var(--sp-8)"><p>Agrega productos al carrito</p></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="venta_volver1()">← Volver</button>
+            <button class="btn btn-primary" id="btn-venta-paso3" onclick="venta_paso3()" disabled>Revisar pedido →</button>
+          </div>
+        </div>
+
+        <!-- Paso 3: Confirmar y resumen -->
+        <div class="wizard-panel" id="venta-paso-3">
+          <div id="resumen-venta"></div>
+          <div class="form-actions mt-4">
+            <button class="btn btn-ghost" onclick="venta_volver2()">← Modificar</button>
+            <button class="btn btn-primary btn-lg" id="btn-confirmar-venta" onclick="confirmarVenta()">✓ Confirmar Venta</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════
+         PAGE: COMPRAS A PROVEEDORES
+    ══════════════════════════════════════ -->
+    <main id="page-compras" class="page">
+      <div class="page-header">
+        <h2>Registrar Compra</h2>
+        <p>Ingreso de mercancía desde proveedores · actualiza stock automáticamente</p>
+      </div>
+
+      <div class="card" style="max-width:840px">
+        <div class="card-header"><h3>Datos de la Compra</h3></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Proveedor</label>
+            <select id="compra-proveedor">
+              <option value="">Cargando…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="datetime-local" id="compra-fecha">
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3>Detalle de Productos</h3>
+            <button class="btn btn-secondary btn-sm" onclick="agregarDetalleCompra()">+ Agregar fila</button>
+          </div>
+          <div id="compra-detalles"></div>
+        </div>
+
+        <div id="compra-form-area"></div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="registrarCompra()">Registrar Compra</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════
+         PAGE: HISTORIAL VENTAS
+    ══════════════════════════════════════ -->
+    <main id="page-historial" class="page">
+      <div class="page-header">
+        <h2>Historial de Ventas</h2>
+        <p>Todas las transacciones registradas</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Ítems</th><th>Total</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="tabla-historial">
+            <tr><td colspan="6"><div class="loading-wrapper"><div class="spinner"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+  </div><!-- /main-content -->
+</div><!-- /app-wrapper -->
+
+<!-- ════════════════════════════════════════════════
+     MODALES
+════════════════════════════════════════════════ -->
+
+<!-- Modal Producto -->
+<div class="modal-overlay" id="modal-producto">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-prod-titulo">Nuevo Producto</h3>
+      <button class="modal-close" onclick="cerrarModalProducto()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-producto" onsubmit="return false">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Código</label>
+            <input type="text" id="prod-codigo" placeholder="Ej: PAP-001" required>
+          </div>
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" id="prod-nombre" placeholder="Nombre del producto" required>
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="prod-categoria" required>
+              <option value="">— Selecciona —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Empaque</label>
+            <select id="prod-empaque" required>
+              <option value="">— Selecciona —</option>
+              <option value="carton">📦 Cartón</option>
+              <option value="plastico">🧴 Plástico</option>
+              <option value="otro">◻ Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Peso (kg)</label>
+            <input type="number" id="prod-peso" min="0" step="0.01" placeholder="0.00" required>
+          </div>
+          <div class="form-group">
+            <label>Precio Unitario</label>
+            <input type="number" id="prod-precio" min="0" step="0.01" placeholder="0.00" required>
+          </div>
+          <div class="form-group">
+            <label>Cantidad en Stock</label>
+            <input type="number" id="prod-cantidad" min="0" value="0" required>
+          </div>
+          <div class="form-group">
+            <label>Stock Mínimo</label>
+            <input type="number" id="prod-stock-min" min="1" value="5" required>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModalProducto()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarProducto()">Guardar Producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cliente -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-cli-titulo">Nuevo Cliente</h3>
+      <button class="modal-close" onclick="cerrarModalCliente()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-cliente" onsubmit="return false">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Cédula</label>
+            <input type="text" id="cli-cedula" placeholder="Número de cédula" required>
+          </div>
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" id="cli-nombre" placeholder="Primer nombre" required>
+          </div>
+          <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" id="cli-apellido" placeholder="Apellido" required>
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" id="cli-telefono" placeholder="Ej: 310 000 0000" required>
+          </div>
+          <div class="form-group full">
+            <label>Correo Electrónico</label>
+            <input type="email" id="cli-correo" placeholder="correo@ejemplo.com" required>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModalCliente()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarCliente()">Guardar Cliente</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Proveedor -->
+<div class="modal-overlay" id="modal-proveedor">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-prov-titulo">Nuevo Proveedor</h3>
+      <button class="modal-close" onclick="cerrarModalProveedor()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-proveedor" onsubmit="return false">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Nombre del Proveedor</label>
+            <input type="text" id="prov-nombre" placeholder="Razón social o nombre" required>
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" id="prov-telefono" placeholder="Teléfono de contacto" required>
+          </div>
+          <div class="form-group">
+            <label>Ciudad</label>
+            <input type="text" id="prov-ciudad" placeholder="Ciudad" required>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModalProveedor()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarProveedor()">Guardar Proveedor</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Resumen Venta -->
+<div class="modal-overlay" id="modal-resumen">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <h3>Detalle de Venta</h3>
+      <button class="modal-close" onclick="cerrarModalResumen()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-resumen-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="cerrarModalResumen()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Confirmar borrar -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h3>Confirmar eliminación</h3>
+      <button class="modal-close" onclick="cerrarModalConfirm()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirm-texto" style="color:var(--color-text-muted);font-size:.9rem;line-height:1.6"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModalConfirm()">Cancelar</button>
+      <button class="btn btn-danger" onclick="ejecutarBorrar()">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<script>
+  // Fecha en topbar
+  const topbarFecha = document.getElementById('topbar-fecha');
+  if (topbarFecha) {
+    const actualizar = () => {
+      topbarFecha.textContent = new Date().toLocaleString('es-CO', {
+        weekday: 'short', day: '2-digit', month: 'short',
+        hour: '2-digit', minute: '2-digit'
+      });
+    };
+    actualizar();
+    setInterval(actualizar, 30000);
+  }
+</script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
