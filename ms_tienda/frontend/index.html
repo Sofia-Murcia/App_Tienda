@@ -9,10 +9,6 @@
 <body>
 
 <div class="app-wrapper">
-
-  <!-- ══════════════════════════════════════════
-       SIDEBAR
-  ══════════════════════════════════════════ -->
   <aside class="sidebar">
     <div class="sidebar-brand">
       <h1>Tienda App</h1>
@@ -86,12 +82,8 @@
     </nav>
   </aside>
 
-  <!-- ══════════════════════════════════════════
-       CONTENIDO PRINCIPAL
-  ══════════════════════════════════════════ -->
   <div class="main-content">
 
-    <!-- Topbar -->
     <header class="topbar">
       <div class="flex items-center gap-3">
         <button class="hamburger" id="btn-hamburger" aria-label="Menú">
@@ -106,19 +98,14 @@
       </div>
     </header>
 
-    <!-- ══════════════════════════════════════
-         PAGE: DASHBOARD
-    ══════════════════════════════════════ -->
     <main id="page-dashboard" class="page active">
       <div class="page-header">
         <h2>Dashboard</h2>
         <p>Resumen financiero y analítica de clientes</p>
       </div>
 
-      <!-- Banner alertas stock -->
       <div id="stock-alerta-banner" class="stock-banner hidden"></div>
 
-      <!-- Stats cards -->
       <div class="stats-grid">
         <div class="stat-card verde">
           <div class="stat-label">Ingresos Totales</div>
@@ -143,9 +130,7 @@
       </div>
 
       <div class="dashboard-grid">
-        <!-- Lado izquierdo: financiero + top compradores -->
         <div>
-          <!-- Barras financieras -->
           <div class="card">
             <div class="card-header">
               <h3>Ingresos vs Gastos</h3>
@@ -172,7 +157,6 @@
             </div>
           </div>
 
-          <!-- Top compradores -->
           <div class="card mt-4">
             <div class="card-header">
               <h3>Top Compradores</h3>
@@ -183,7 +167,6 @@
             </div>
           </div>
 
-          <!-- Clientes una compra -->
           <div class="card mt-4">
             <div class="card-header">
               <h3>Compraron Solo Una Vez</h3>
@@ -195,7 +178,6 @@
           </div>
         </div>
 
-        <!-- Lado derecho: cliente más frecuente -->
         <div>
           <div class="card">
             <div class="card-header">
@@ -209,9 +191,6 @@
       </div>
     </main>
 
-    <!-- ══════════════════════════════════════
-         PAGE: PRODUCTOS
-    ══════════════════════════════════════ -->
     <main id="page-productos" class="page">
       <div class="page-header flex items-center justify-between">
         <div>
@@ -223,7 +202,6 @@
         </button>
       </div>
 
-      <!-- Filtros -->
       <div class="card mb-5">
         <div class="flex items-center gap-3">
           <input type="text" id="buscador-prod" placeholder="Buscar por nombre o código…" oninput="filtrarProductos()" style="max-width:280px">
@@ -253,9 +231,6 @@
       </div>
     </main>
 
-    <!-- ══════════════════════════════════════
-         PAGE: CLIENTES
-    ══════════════════════════════════════ -->
     <main id="page-clientes" class="page">
       <div class="page-header flex items-center justify-between">
         <div>
@@ -281,9 +256,6 @@
       </div>
     </main>
 
-    <!-- ══════════════════════════════════════
-         PAGE: PROVEEDORES
-    ══════════════════════════════════════ -->
     <main id="page-proveedores" class="page">
       <div class="page-header flex items-center justify-between">
         <div>
@@ -309,9 +281,6 @@
       </div>
     </main>
 
-    <!-- ══════════════════════════════════════
-         PAGE: NUEVA VENTA (Wizard)
-    ══════════════════════════════════════ -->
     <main id="page-ventas" class="page">
       <div class="page-header">
         <h2>Nueva Venta</h2>
@@ -335,7 +304,6 @@
           </div>
         </div>
 
-        <!-- Paso 1: Seleccionar cliente -->
         <div class="wizard-panel active" id="venta-paso-1">
           <div class="card">
             <div class="card-header"><h3>¿Quién compra?</h3></div>
@@ -352,7 +320,6 @@
           </div>
         </div>
 
-        <!-- Paso 2: Seleccionar productos -->
         <div class="wizard-panel" id="venta-paso-2">
           <div class="card">
             <div class="card-header"><h3>Agregar Productos</h3></div>
@@ -392,7 +359,6 @@
           </div>
         </div>
 
-        <!-- Paso 3: Confirmar y resumen -->
         <div class="wizard-panel" id="venta-paso-3">
           <div id="resumen-venta"></div>
           <div class="form-actions mt-4">
@@ -403,9 +369,6 @@
       </div>
     </main>
 
-    <!-- ══════════════════════════════════════
-         PAGE: COMPRAS A PROVEEDORES
-    ══════════════════════════════════════ -->
     <main id="page-compras" class="page">
       <div class="page-header">
         <h2>Registrar Compra</h2>
@@ -443,9 +406,6 @@
       </div>
     </main>
 
-    <!-- ══════════════════════════════════════
-         PAGE: HISTORIAL VENTAS
-    ══════════════════════════════════════ -->
     <main id="page-historial" class="page">
       <div class="page-header">
         <h2>Historial de Ventas</h2>
@@ -464,14 +424,9 @@
       </div>
     </main>
 
-  </div><!-- /main-content -->
-</div><!-- /app-wrapper -->
+  </div>
+</div>
 
-<!-- ════════════════════════════════════════════════
-     MODALES
-════════════════════════════════════════════════ -->
-
-<!-- Modal Producto -->
 <div class="modal-overlay" id="modal-producto">
   <div class="modal">
     <div class="modal-header">
@@ -499,8 +454,8 @@
             <label>Tipo de Empaque</label>
             <select id="prod-empaque" required>
               <option value="">— Selecciona —</option>
-              <option value="carton">📦 Cartón</option>
-              <option value="plastico">🧴 Plástico</option>
+              <option value="carton"> Cartón</option>
+              <option value="plastico"> Plástico</option>
               <option value="otro">◻ Otro</option>
             </select>
           </div>
@@ -530,7 +485,6 @@
   </div>
 </div>
 
-<!-- Modal Cliente -->
 <div class="modal-overlay" id="modal-cliente">
   <div class="modal">
     <div class="modal-header">
@@ -570,7 +524,6 @@
   </div>
 </div>
 
-<!-- Modal Proveedor -->
 <div class="modal-overlay" id="modal-proveedor">
   <div class="modal">
     <div class="modal-header">
@@ -602,7 +555,6 @@
   </div>
 </div>
 
-<!-- Modal Resumen Venta -->
 <div class="modal-overlay" id="modal-resumen">
   <div class="modal" style="max-width:640px">
     <div class="modal-header">
@@ -616,7 +568,6 @@
   </div>
 </div>
 
-<!-- Modal Confirmar borrar -->
 <div class="modal-overlay" id="modal-confirm">
   <div class="modal" style="max-width:420px">
     <div class="modal-header">
@@ -633,11 +584,9 @@
   </div>
 </div>
 
-<!-- Toast container -->
 <div id="toast-container"></div>
 
 <script>
-  // Fecha en topbar
   const topbarFecha = document.getElementById('topbar-fecha');
   if (topbarFecha) {
     const actualizar = () => {

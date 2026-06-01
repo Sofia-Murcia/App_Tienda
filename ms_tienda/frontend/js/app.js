@@ -1,33 +1,20 @@
-/**
- * app.js — Lógica principal del Frontend
- * Tienda App · Vanilla JS · SPA con enrutamiento por secciones
- */
-
 import {
   categoriaApi, productoApi, clienteApi,
   proveedorApi, ventaApi, compraApi, reporteApi
 } from './api.js';
 
-// ════════════════════════════════════════════════════════════════
-// 1. UTILIDADES GLOBALES
-// ════════════════════════════════════════════════════════════════
-
-/** Formato moneda COP */
 const fmt = (n) => new Intl.NumberFormat('es-CO', {
   style: 'currency', currency: 'COP', minimumFractionDigits: 0
 }).format(Number(n) || 0);
 
-/** Fecha/hora local para inputs datetime-local */
 const nowLocal = () => new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
   .toISOString().slice(0, 16);
 
-/** Fecha legible */
 const fmtFecha = (s) => s ? new Date(s).toLocaleString('es-CO', {
   day: '2-digit', month: 'short', year: 'numeric',
   hour: '2-digit', minute: '2-digit'
 }) : '—';
 
-/** Toast de notificación */
 function toast(msg, tipo = 'default') {
   const c = document.getElementById('toast-container');
   const t = document.createElement('div');
@@ -37,14 +24,11 @@ function toast(msg, tipo = 'default') {
   setTimeout(() => t.remove(), 3800);
 }
 
-/** Spinner de carga */
 const loadingHtml = `<div class="loading-wrapper"><div class="spinner"></div><p>Cargando...</p></div>`;
 
-/** Estado vacío */
 const emptyHtml = (msg = 'No hay registros aún') =>
   `<div class="empty-state"><div class="empty-icon">◯</div><p>${msg}</p></div>`;
 
-/** Badge de categoría */
 function badgeCat(nombre) {
   const map = {
     'Papelería': 'papeleria', 'Droguería': 'drogueria',
@@ -54,13 +38,11 @@ function badgeCat(nombre) {
   return `<span class="badge badge-${cls}">${nombre}</span>`;
 }
 
-/** Badge de empaque */
 function badgeEmpaque(tipo) {
-  const labels = { carton: '📦 Cartón', plastico: '🧴 Plástico', otro: '◻ Otro' };
+  const labels = { carton: ' Cartón', plastico: ' Plástico', otro: '◻ Otro' };
   return `<span class="badge badge-default">${labels[tipo] || tipo}</span>`;
 }
 
-/** HTML de stock con alerta */
 function stockBadge(cantidad, stockMinimo = 5) {
   if (cantidad === 0)
     return `<span class="stock-badge">⚠ Sin stock</span>`;
@@ -69,16 +51,11 @@ function stockBadge(cantidad, stockMinimo = 5) {
   return `<span class="stock-ok">${cantidad}</span>`;
 }
 
-/** Clase de fila según alerta de stock */
 function rowAlerta(cantidad, stockMinimo = 5) {
   if (cantidad === 0) return 'alerta-stock-critico';
   if (cantidad < stockMinimo) return 'alerta-stock-bajo';
   return '';
 }
-
-// ════════════════════════════════════════════════════════════════
-// 2. NAVEGACIÓN SPA
-// ════════════════════════════════════════════════════════════════
 
 let paginaActual = 'dashboard';
 
@@ -98,7 +75,6 @@ function navegar(pagina) {
   paginaActual = pagina;
   cargarPagina(pagina);
 
-  // Cerrar sidebar en mobile
   document.querySelector('.sidebar')?.classList.remove('open');
 }
 
@@ -113,10 +89,6 @@ function cargarPagina(pagina) {
     case 'historial':   cargarHistorialVentas(); break;
   }
 }
-
-// ════════════════════════════════════════════════════════════════
-// 3. DASHBOARD
-// ════════════════════════════════════════════════════════════════
 
 async function cargarDashboard() {
   try {
@@ -134,19 +106,16 @@ async function cargarDashboard() {
     const utilidad  = totalIngr - totalGast;
     const maxVal    = Math.max(totalIngr, totalGast, 1);
 
-    // Stat cards
     document.getElementById('stat-ingresos').textContent  = totalIngr.toLocaleString('es-CO');
     document.getElementById('stat-gastos').textContent    = totalGast.toLocaleString('es-CO');
     document.getElementById('stat-utilidad').textContent  = utilidad.toLocaleString('es-CO');
     document.getElementById('stat-stock-alerta').textContent = stockBajoData.length;
 
-    // Barras
     document.getElementById('bar-ingresos').style.width = `${(totalIngr / maxVal) * 100}%`;
     document.getElementById('bar-gastos').style.width   = `${(totalGast / maxVal) * 100}%`;
     document.getElementById('bar-label-ingr').textContent = fmt(totalIngr);
     document.getElementById('bar-label-gast').textContent = fmt(totalGast);
 
-    // Top compradores
     const topEl = document.getElementById('top-compradores-list');
     if (!top.length) {
       topEl.innerHTML = emptyHtml('Sin ventas registradas');
@@ -165,7 +134,6 @@ async function cargarDashboard() {
         </div>`).join('');
     }
 
-    // Una sola compra
     const unaEl = document.getElementById('una-compra-list');
     if (!unaCompra.length) {
       unaEl.innerHTML = emptyHtml('Ninguno por ahora');
@@ -180,7 +148,6 @@ async function cargarDashboard() {
         </div>`).join('');
     }
 
-    // Más frecuente
     const frecEl = document.getElementById('mas-frecuente');
     if (!frecuente) {
       frecEl.innerHTML = emptyHtml('Sin datos');
@@ -197,7 +164,6 @@ async function cargarDashboard() {
         </div>`;
     }
 
-    // Banner alertas de stock
     const bannerEl = document.getElementById('stock-alerta-banner');
     if (stockBajoData.length > 0) {
       bannerEl.innerHTML = `
@@ -213,10 +179,6 @@ async function cargarDashboard() {
     toast(e.message, 'error');
   }
 }
-
-// ════════════════════════════════════════════════════════════════
-// 4. PRODUCTOS
-// ════════════════════════════════════════════════════════════════
 
 let _categorias = [];
 let _editProductoId = null;
@@ -335,10 +297,6 @@ window.guardarProducto = async function () {
   } catch (e) { toast(e.message, 'error'); }
 };
 
-// ════════════════════════════════════════════════════════════════
-// 5. CLIENTES
-// ════════════════════════════════════════════════════════════════
-
 let _editClienteId = null;
 
 async function cargarClientes() {
@@ -422,10 +380,6 @@ window.guardarCliente = async function () {
   } catch (e) { toast(e.message, 'error'); }
 };
 
-// ════════════════════════════════════════════════════════════════
-// 6. PROVEEDORES
-// ════════════════════════════════════════════════════════════════
-
 let _editProveedorId = null;
 
 async function cargarProveedores() {
@@ -503,12 +457,8 @@ window.guardarProveedor = async function () {
   } catch (e) { toast(e.message, 'error'); }
 };
 
-// ════════════════════════════════════════════════════════════════
-// 7. WIZARD DE VENTAS
-// ════════════════════════════════════════════════════════════════
-
 let _ventaCliente   = null;
-let _ventaProductos = []; // lista: { producto, cantidad }
+let _ventaProductos = [];
 let _ventaCategoria = null;
 
 async function iniciarWizardVenta() {
@@ -684,7 +634,6 @@ window.confirmarVenta = async function () {
     };
     const venta = await ventaApi.crear(body);
     toast(`✓ Venta #${venta.id} registrada exitosamente`, 'success');
-    // Mostrar resumen final desde API
     const resumen = await reporteApi.resumenVenta(venta.id);
     renderResumenFinal(resumen);
     _ventaProductos = [];
@@ -727,13 +676,8 @@ function renderResumenFinal(r) {
     <div class="mt-6 flex gap-3">
       <button class="btn btn-secondary" onclick="iniciarWizardVenta()">Nueva Venta</button>
     </div>`;
-  // ocultar botón de confirmar
   document.getElementById('btn-confirmar-venta').classList.add('hidden');
 }
-
-// ════════════════════════════════════════════════════════════════
-// 8. COMPRAS A PROVEEDORES
-// ════════════════════════════════════════════════════════════════
 
 let _compraDetalles = [];
 
@@ -831,14 +775,9 @@ window.registrarCompra = async function () {
     });
     toast(`✓ Compra #${compra.id} registrada. Stock actualizado.`, 'success');
     cargarCompras();
-    // Recargar productos en memoria
     productoApi.listar().then(p => window._productosData = p);
   } catch (e) { toast(e.message, 'error'); }
 };
-
-// ════════════════════════════════════════════════════════════════
-// 9. HISTORIAL DE VENTAS
-// ════════════════════════════════════════════════════════════════
 
 async function cargarHistorialVentas() {
   const tbody = document.getElementById('tabla-historial');
@@ -900,10 +839,6 @@ window.cerrarModalResumen = function () {
   document.getElementById('modal-resumen').classList.remove('open');
 };
 
-// ════════════════════════════════════════════════════════════════
-// 10. CONFIRM BORRAR (genérico)
-// ════════════════════════════════════════════════════════════════
-
 let _borrarPendiente = null;
 
 window.confirmarBorrar = function (entidad, id, nombre) {
@@ -934,22 +869,15 @@ window.ejecutarBorrar = async function () {
   } catch (e) { toast(e.message, 'error'); }
 };
 
-// ════════════════════════════════════════════════════════════════
-// 11. INIT
-// ════════════════════════════════════════════════════════════════
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Navegación
   document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', () => navegar(item.dataset.page));
   });
 
-  // Hamburguesa mobile
   document.getElementById('btn-hamburger')?.addEventListener('click', () => {
     document.querySelector('.sidebar')?.classList.toggle('open');
   });
 
-  // Cerrar modales al click en overlay
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) {
@@ -958,9 +886,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Navegar a dashboard inicial
   navegar('dashboard');
 });
 
-// Exponer navegar globalmente (para enlaces internos)
 window.navegar = navegar;
