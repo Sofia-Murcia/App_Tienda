@@ -1,7 +1,5 @@
 const API_BASE = 'http://localhost:8080';
 
-// ─── Utilidad HTTP ───────────────────────────────────────────────
-
 async function http(method, path, body = null) {
   const options = {
     method,
@@ -24,8 +22,6 @@ const post   = (path, body)   => http('POST',   path, body);
 const put    = (path, body)   => http('PUT',    path, body);
 const del    = (path)         => http('DELETE', path);
 
-// ─── Categorías ──────────────────────────────────────────────────
-
 export const categoriaApi = {
   listar:  ()           => get('/categorias'),
   detalle: (id)         => get(`/categorias/${id}`),
@@ -33,8 +29,6 @@ export const categoriaApi = {
   editar:  (id, data)   => put(`/categorias/${id}`, data),
   borrar:  (id)         => del(`/categorias/${id}`),
 };
-
-// ─── Productos ───────────────────────────────────────────────────
 
 export const productoApi = {
   listar:           ()           => get('/productos'),
@@ -45,8 +39,6 @@ export const productoApi = {
   syncProveedores:  (id, data)   => put(`/productos/${id}/proveedores`, data),
 };
 
-// ─── Clientes ────────────────────────────────────────────────────
-
 export const clienteApi = {
   listar:  ()           => get('/clientes'),
   detalle: (id)         => get(`/clientes/${id}`),
@@ -54,8 +46,6 @@ export const clienteApi = {
   editar:  (id, data)   => put(`/clientes/${id}`, data),
   borrar:  (id)         => del(`/clientes/${id}`),
 };
-
-// ─── Proveedores ─────────────────────────────────────────────────
 
 export const proveedorApi = {
   listar:  ()           => get('/proveedores'),
@@ -65,25 +55,17 @@ export const proveedorApi = {
   borrar:  (id)         => del(`/proveedores/${id}`),
 };
 
-// ─── Ventas ──────────────────────────────────────────────────────
-// POST body: { cliente_id, fecha, detalles: [{ producto_id, cantidad }] }
-
 export const ventaApi = {
   listar:  ()     => get('/ventas'),
   detalle: (id)   => get(`/ventas/${id}`),
   crear:   (data) => post('/ventas', data),
 };
 
-// ─── Compras (a proveedores) ─────────────────────────────────────
-// POST body: { proveedor_id, fecha, detalles: [{ producto_id, cantidad, costo_unitario }] }
-
 export const compraApi = {
   listar:  ()     => get('/compras'),
   detalle: (id)   => get(`/compras/${id}`),
   crear:   (data) => post('/compras', data),
 };
-
-// ─── Reportes ────────────────────────────────────────────────────
 
 export const reporteApi = {
   ingresos:       ()   => get('/reportes/ingresos'),
