@@ -87,6 +87,7 @@ function cargarPagina(pagina) {
     case 'ventas':      iniciarWizardVenta(); break;
     case 'compras':     cargarCompras(); break;
     case 'historial':   cargarHistorialVentas(); break;
+    case 'categorias':  cargarCategorias(); break;
   }
 }
 
@@ -796,6 +797,23 @@ async function cargarHistorialVentas() {
         <td>${v.detalles?.length ?? 0} ítem(s)</td>
         <td class="dinero">${fmt(v.total)}</td>
         <td><button class="btn btn-ghost btn-sm" onclick="verResumenVenta(${v.id})">Ver resumen</button></td>
+      </tr>`).join('');
+  } catch (e) { toast(e.message, 'error'); }
+}
+async function cargarCategorias() {
+  const tbody = document.getElementById('tabla-historial');
+  tbody.innerHTML = loadingHtml;
+  try {
+    const categorias = await categoriaApi.listar();
+    if (!categorias.length) {
+      tbody.innerHTML = `<tr><td colspan="6">${emptyHtml('Sin categorías registradas')}</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = categorias.reverse().map(c => `
+      <tr>
+        <td class="td-code">#${c.id}</td>
+        <td>${c.nombre}</td>
+        <td>${c.descripcion}</td>
       </tr>`).join('');
   } catch (e) { toast(e.message, 'error'); }
 }
